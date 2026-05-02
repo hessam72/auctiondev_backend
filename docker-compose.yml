@@ -15,15 +15,16 @@ services:
     environment:
       - NODE_ENV=development
       - PORT=4040
+      - MONGO_URI=mongodb://auctiondbdev:27017/auction 
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     depends_on:
       - nginxdev
       - auctiondbdev
-    links:
-      - nginxdev
-      - auctiondbdev
+    # links:
+    #   - nginxdev
+    #   - auctiondbdev
     networks:
       - auctiondev
   # Nginx
