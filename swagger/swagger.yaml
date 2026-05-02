@@ -1,0 +1,1061 @@
+openapi: 3.0.0
+info:
+  title: 'My App APIs '
+  description: MyApp V1
+  version: v1
+servers:
+  - url: 'https://api.mozamona.com/api/'
+    description: Auction API
+  - url: 'http://localhost:3003/api/'
+    description: SwaggerHub API Auto Mocking
+tags:
+  - name: Auth
+    description: Auth account
+  - name: User
+    description: Users description
+  - name: Plan
+    description: Plan Api
+  - name: Category
+    description: Category Api
+  - name: Product
+    description: Product Api
+  - name: Transaction
+    description: Transaction Api
+  - name: About
+    description: About
+  - name: Rule
+    description: Rule
+  - name: Support
+    description: Support
+  - name: Setting
+    description: Setting Api
+  - name: Check
+    description: Check Api
+paths:
+  /auth/login:
+    post:
+      summary: login
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+      description: 'Login with username and password'
+      responses:
+        '200':
+          description: object
+        '500':
+          description: Server Internal Error
+  /auth/register:
+    post:
+      summary: register
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+      description: 'Register with mobile and username and password'
+      responses:
+        '200':
+          description: object
+        '500':
+          description: Server Internal Error
+  /auth/verify:
+    put:
+      summary: verify
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Verify'
+      description: 'sign user and resive jwt token'
+      responses:
+        '200':
+          description: object
+        '500':
+          description: Server Internal Error
+  /auth/otp:
+    post:
+      summary: otp
+      tags:
+        - Auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Otp'
+      description: 'Resend code and forget password'
+      responses:
+        '200':
+          description: object
+        '500':
+          description: Server Internal Error
+  /setting/about:
+    get:
+      tags:
+        - About
+      summary: Get once saved about
+      description: about
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResContent'
+        '500':
+          description: Server Internal Error
+  /setting/rule:
+    get:
+      tags:
+        - Rule
+      summary: Get once saved rule
+      description: rule
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResContent'
+        '500':
+          description: Server Internal Error
+  /notify:
+    get:
+      summary: notify
+      tags:
+        - Notify
+      security:
+        - oAuth: []
+      description: 'get list of notify'
+      responses:
+        '200':
+          description: object
+        '400':
+          description: Bad Reuest
+        '500':
+          description: Server Internal Error
+  /message:
+    get:
+      summary: message
+      tags:
+        - Support
+      security:
+        - oAuth: []
+      description: 'get list of message'
+      responses:
+        '200':
+          description: object
+        '400':
+          description: Bad Reuest
+        '500':
+          description: Server Internal Error
+    post:
+      summary: message
+      tags:
+        - Support
+      security:
+        - oAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Message'
+      description: 'save message'
+      responses:
+        '200':
+          description: object
+        '400':
+          description: Bad Reuest
+        '500':
+          description: Server Internal Error
+
+  # end done
+  /users/newpassword:
+    put:
+      summary: newpassword
+      tags:
+        - User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPassword'
+      description: 'change password but whene user has login'
+      responses:
+        '200':
+          description: object
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+  /health-check:
+    get:
+      tags:
+        - Check
+      summary: health check api
+      description: ''
+      responses:
+        '200':
+          description: Ok
+        '500':
+          description: Server Internal Error
+  /users/admin:
+    get:
+      tags:
+        - User
+      summary: Get all saved users
+      description: List all of the users that the admin has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+  /users:
+    get:
+      tags:
+        - User
+      summary: Get all saved users
+      description: List all of the users that the admin has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+    post:
+      tags:
+        - User
+      summary: create User
+      description: create User
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+  /users/{uuid}:
+    get:
+      tags:
+        - User
+      summary: Get Profile
+      description:  Get Profile
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+    put:
+      tags:
+        - User
+      summary: Get Profile
+      description:  Get Profile
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+  /users/me:
+    get:
+      tags:
+        - User
+      summary: Get Profile
+      description:  Get Profile
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+    put:
+      tags:
+        - User
+      summary: Get Profile
+      description:  Get Profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Profile'
+      responses:
+        '200':
+          description: Successful
+        '401':
+          description: Validating/Authenticating user (security)
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+  /category:
+    get:
+      tags:
+        - Category
+      summary: Get all saved categories
+      description: List all of the categories that the admin has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    post:
+      tags:
+        - Category
+      summary: new category
+      description: save new categoy
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /category/{uuid}:
+    put:
+      tags:
+        - Category
+      summary: delete category
+      description: delete categoy
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    delete:
+      tags:
+        - Category
+      summary: delete category
+      description: delete categoy
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /plan:
+    get:
+      security:
+        - oAuth: []
+      tags:
+        - Plan
+      summary: Get all saved plans
+      description: List all of the plans that the admin has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    post:
+      security:
+        - oAuth: []
+      tags:
+        - Plan
+      summary: new Plan
+      description: save new Plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plan'
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /plan/{uuid}:
+    put:
+      security:
+        - oAuth: []
+      tags:
+        - Plan
+      summary: delete plans
+      description: delete plans
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Plan'
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    delete:
+      security:
+        - oAuth: []
+      tags:
+        - Plan
+      summary: delete Plan
+      description: delete Plan
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /product/filter:
+    get:
+      description: get produc by filter
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      parameters:
+        - $ref:  "#/components/parameters/categoryParam"
+        - $ref:  "#/components/parameters/searchParam"
+        - $ref:  "#/components/parameters/locationParam"
+        - $ref:  "#/components/parameters/tagsParam"
+      responses:
+        '200':
+          description: OK
+  /product:
+    get:
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      summary: Get all saved plans
+      description: List all of the plans that the admin has saved
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    post:
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      summary: new Plan
+      description: save new Plan
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /product/{uuid}:
+    put:
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      summary: update plans
+      description: update plans
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    get:
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      summary: find product by id
+      description: find product by id
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    patch:
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      summary: show product
+      description: show product
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    delete:
+      security:
+        - oAuth: []
+      tags:
+        - Product
+      summary: delete Product
+      description: delete Product
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /transaction:
+    get:
+      security:
+        - oAuth: []
+      tags:
+        - Transaction
+      summary: Get all saved Transaction
+      description: List all of the Transaction that the admin has saved
+      responses:
+        '200':
+          description: Successful  for create transaction in nextpay and bazar
+        '201':
+          description: Successful for wallet
+        '400':
+          description: Bad request and no many
+        '500':
+          description: Server Internal Error
+    post:
+      security:
+        - oAuth: []
+      tags:
+        - Transaction
+      summary: Create Transaction
+      description: For create new transaction use this api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Transaction'
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /transaction/success:
+    get:
+      security:
+        - oAuth: []
+      tags:
+        - Transaction
+      summary: Get all success Transaction
+      description: List all of the Transaction that the admin has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /setting:
+    get:
+      tags:
+        - Setting
+      summary: Get all saved setting
+      description: List all of the settings that the admin has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+    post:
+      tags:
+        - Setting
+      summary: new Setting
+      description: save new Setting
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Setting'
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+  /fav:
+    get:
+      tags:
+        - Fav
+      summary: Get all saved fav
+      description: List all of the fav that the user has saved
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+    post:
+      tags:
+        - Fav
+      summary: new fav
+      description: save new fav
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Favorite'
+      responses:
+        '200':
+          description: Successful
+        '204':
+          description: You have No saved users
+        '400':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+  /fav/{uuid}:
+    delete:
+      tags:
+        - Fav
+      summary: delete fav
+      description: delete fav
+      parameters:
+        - $ref: "#/components/parameters/uuidParam"
+      responses:
+        '200':
+          description: Successful
+        '404':
+          description: Bad request
+        '500':
+          description: Server Internal Error
+      security:
+        - oAuth: []
+
+components:
+  parameters:
+    tagsParam:
+      name: tags
+      in: query
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      example:
+        - "موتور"
+        - "انتظامی"
+    searchParam:
+      name: search
+      in: query
+      description: 'search in title'
+      required: false
+      schema:
+        type: string
+        default: ''
+    locationParam:
+      name: location
+      in: query
+      description: 'search in location'
+      required: false
+      schema:
+        type: string
+        default: ''
+    categoryParam:
+      name: categories
+      in: query
+      description: 'filter by category'
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      example:
+        - "5f29983101c5dc001f30e98f"
+        - "5f29981b01c5dc001f30e98e"
+    uuidParam:
+      name: uuid
+      in: path
+      description: 'uuid'
+      required: true
+      schema:
+        type: string
+        default: '000000000000000000000'
+  securitySchemes:
+    oAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Favorite:
+      type: object
+      properties:
+        productId:
+          type: string
+          default: "000000000000000000000"
+      example:
+        productId: "000000000000000000000"
+    Notify:
+      type: object
+      properties:
+        title:
+          type: string
+          default: "title"
+        message:
+          type: string
+          default: "message"
+      example:
+        title: "title"
+        message: "message"
+    Message:
+      type: object
+      properties:
+        title:
+          type: string
+          default: "title"
+        message:
+          type: string
+          default: "message"
+      example:
+        title: "title"
+        message: "message"
+    Verify:
+      type: object
+      properties:
+        mobile:
+          type: string
+          default: "09332369461"
+        code:
+          type: string
+          default: 9461
+      example:
+        mobile: "09332369461"
+        code: "9461"
+    NewPassword:
+      type: object
+      properties:
+        password:
+          type: string
+          default: "123456"
+        passwordConfirm:
+          type: string
+          default: "123456"
+    Otp:
+      type: object
+      properties:
+        mobile:
+          type: string
+          default: "09332369461"
+    Register:
+      type: object
+      properties:
+        mobile:
+          type: string
+          default: "09332369461"
+        username:
+          type: string
+          default: sajadweb
+        password:
+          type: string
+          default: password
+      example:
+        mobile: "09332369461"
+        username: "sajadweb"
+        password: "123456"
+    Profile:
+      type: object
+      properties:
+        mobile:
+          type: string
+          default: "09332369461"
+        name:
+          type: string
+          default: name
+        password:
+          type: string
+          default: password
+      example:
+        name: "sajjad"
+        mobile: "09332369461"
+        password: "123456"
+    User:
+      type: object
+      properties:
+        mobile:
+          type: string
+          default: "09332369461"
+        name:
+          type: string
+          default: name
+        username:
+          type: string
+          default: username
+        password:
+          type: string
+          default: password
+      example:
+        name: "sajjad"
+        mobile: "09332369461"
+        password: "123456"
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+          default: react
+        password:
+          type: string
+          default: password
+      example:
+        username: 'sajadweb'
+        password: '123456'
+    Category:
+      type: object
+      properties:
+        title:
+          type: string
+          default: react
+        icon:
+          type: string
+          default: icon
+        parentId:
+          type: string
+          default: null
+    Plan:
+      type: object
+      properties:
+        title:
+          type: string
+          default: react
+        price:
+          type: string
+          default: 200
+        event:
+          type: string
+          default: null
+        duration:
+          type: string
+          default: "once"
+    Setting:
+      type: object
+      properties:
+        type:
+          type: string
+          default: react
+        content:
+          type: string
+          default: icon
+    Transaction:
+      type: object
+      properties:
+        amount:
+          type: number
+          default: 100
+        description:
+          type: string
+          default: null
+        gateway:
+          type: number
+          default: 1
+          description: 'please set 1 for NextPay and for bazar set 2 and wallet set 3'
+        type:
+          type: string
+          default: "wallet"
+          description: 'wallet and plan'
+        plan:
+          type: string
+          default: "id"
+        product:
+          type: string
+          default: "id"
+      example:
+        amount: 2000
+        description: 'charge wallet'
+        gateway: 1
+        type: "wallet"
+    ResContent:
+      type: object
+      properties:
+        content:
+          type: string
+          default: 'content'
+      example:
+        content: 'content'
+    Amount:
+      type: object
+      required: ['amount']
+      properties:
+        amount:
+          type: number
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        amount: 200
+        createdAt: "12/11/2020"
+        updatedAt: "12/11/2020"
+    File:
+      type: object
+      required: ['path']
+      properties:
+        path:
+          type: string
+        free:
+          type: boolean
+        hero:
+         type: boolean
+        order:
+          type: number
+          default: 0
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+      example:
+        path: "http://acution.apipicker.ir/path.png"
+        free: true
+        hero: true
+    Product:
+      type: object
+      properties:
+        title:
+          type: string
+          default: react
+        description:
+          type: string
+          default: null
+        amount:
+          $ref: '#/components/schemas/Amount'
+        files:
+          type: array
+          items:
+            $ref: '#/components/schemas/File'
+        tags:
+          type: array
+          items:
+             type: string
+        category:
+          $ref: '#/components/schemas/Category'

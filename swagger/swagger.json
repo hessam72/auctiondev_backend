@@ -1,0 +1,156 @@
+{
+   "openapi": "3.0.0",
+   "info": {
+      "title": "My App APIs ",
+      "description": "MyApp V1",
+      "version": "v1"
+   },
+   "servers": [
+      {
+         "url": "http://localhost:3003/api/",
+         "description": "SwaggerHub API Auto Mocking"
+      }
+   ],
+   "tags": [
+      {
+         "name": "Check",
+         "description": "Check Api"
+      },
+      {
+         "name": "User",
+         "description": "Users description"
+      },
+      {
+         "name": "Auth",
+         "description": "Auth description"
+      }
+   ],
+   "paths": {
+      "/health-check": {
+         "get": {
+            "tags": [ "Check" ],
+            "summary": "health check api",
+            "description": "",
+            "responses": {
+               "200": {
+                  "description": "Ok"
+               },
+               "500": {
+                  "description": "Server Internal Error"
+               }
+            }
+         }
+      },
+      "/auth/login": {
+         "post": {
+            "summary": "login",
+            "tags": [ "Auth" ],
+            "requestBody": {
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/Login"
+                     }
+                  }
+               }
+            },
+            "description": "",
+            "responses": {
+               "200": {
+                  "description": "object"
+               },
+               "500": {
+                  "description": "Server Internal Error"
+               }
+            },
+            "security": [
+               {
+                  "oAuth": []
+               }
+            ]
+         }
+      },
+      "/auth/random-number": {
+         "get": {
+            "summary": "random-number",
+            "tags": [ "Auth" ],
+            "description": "",
+            "responses": {
+               "200": {
+                  "description": "object"
+               },
+               "500": {
+                  "description": "Server Internal Error"
+               }
+            },
+            "security": [
+               {
+                  "oAuth": []
+               }
+            ]
+         }
+      },
+      "/users": {
+         "get": {
+            "tags": [ "User" ],
+            "summary": "Get all saved users",
+            "description": "List all of the users that the admin has saved",
+            "responses": {
+               "200": {
+                  "description": "Successful"
+               },
+               "204": {
+                  "description": "You have No saved users"
+               },
+               "400": {
+                  "description": "Bad request"
+               },
+               "401": {
+                  "description": "Validating/Authenticating user (security)"
+               },
+               "500": {
+                  "description": "Server Internal Error"
+               }
+            },
+            "security": [
+               {
+                  "oAuth": []
+               }
+            ]
+         }
+      }
+   },
+   "components": {
+      "schemas":{
+         "Login":{
+            "type": "object",
+            "properties":{
+               "username":{
+                  "type": "string",
+                  "default": "react"
+               },
+               "password":{
+                  "type": "string",
+                  "default": "password"
+               }
+            }
+         }
+      },
+      "securitySchemes": {
+         "oAuth": {
+            "type": "oauth2",
+            "description": "This API uses OAuth 2 with the implicit grant flow. [More info](https://api.example.com/docs/auth)",
+            "flows": {
+               "implicit": {
+                  "authorizationUrl": "https://myapp.b2clogin.com/myapp.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1_bundll",
+                  "scopes": {
+                     "openid": "Open ID Connect",
+                     "https://myapp.onmicrosoft.com/bundll/read": "basic read access",
+                     "https://myapp.onmicrosoft.com/bundll/write": "basic write access"
+                  }
+               }
+            }
+         }
+      }
+   }
+}
