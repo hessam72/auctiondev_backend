@@ -43,7 +43,7 @@ services:
   # MongoDb
   auctiondbdev:
     container_name: auctiondbdev
-    image: mongo
+    image: mongo:4.4
     ports:
       - "27017:27017"
     restart: always
