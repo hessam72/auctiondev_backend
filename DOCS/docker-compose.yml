@@ -1,0 +1,102 @@
+version: '3.8'
+
+networks:
+  auctiondev-network:
+    driver: bridge
+
+services:
+  # ============ MONGODB ============
+  mongodb:
+    image: mongo:5.0
+    container_name: auctiondev-mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - auctiondev-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ============ BACKEND API ============
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./docker/dev/Dockerfile
+    container_name: auctiondev-backend
+    restart: always
+    ports:
+      - "4040:4040"
+    environment:
+      - NODE_ENV=development
+      - PORT=4040
+      - MONGO_HOST=mongodb://mongodb:27017/auctiondev
+      - JWT_SECRET=your_secret_key_here
+      - SMS_KEY=your_sms_key
+      - NOTIFY_APPKEY=your_notify_app_key
+      - NOTIFY_UTL=your_notify_url
+      - NOTIFY_APIKEY=your_notify_api_key
+      - CLINT_CALLBACK_URI=http://localhost:3000
+    volumes:
+      - ./backend:/usr/src/app
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - auctiondev-network
+    command: npm start
+
+  # ============ PWA (Marketplace App) ============
+  pwa:
+    build:
+      context: ./pwa
+      dockerfile: ./docker/Dockerfile
+    container_name: auctiondev-pwa
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:4040/api
+      - REACT_APP_API_PORT=4040
+      - REACT_APP_ENV=development
+    volumes:
+      - ./pwa:/app
+    depends_on:
+      - backend
+    networks:
+      - auctiondev-network
+    command: yarn start
+
+  # ============ WWW (Public Website) ============
+  www:
+    build:
+      context: ./www
+      dockerfile: ./docker/Dockerfile
+    container_name: auctiondev-www
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REACT_APP_API_URL=http://localhost:4040/api
+      - REACT_APP_API_PORT=4040
+      - REACT_APP_ENV=development
+    volumes:
+      - ./www:/app
+    depends_on:
+      - backend
+    networks:
+      - auctiondev-network
+    command: yarn start
+
+volumes:
+  mongodb_data:
+    driver: local
