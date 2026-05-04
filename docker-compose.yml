@@ -2,6 +2,8 @@ version: "3"
 networks:
   auctiondev:
     driver: bridge
+volumes:
+  mongodb_data:
 services:
   # Node code
   auctiondev:
