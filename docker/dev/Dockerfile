@@ -13,4 +13,5 @@ RUN npm install --legacy-peer-deps
 COPY . /usr/src/app
 COPY .env /usr/src/app
 EXPOSE 4040
-CMD  ["npm","start"]
+CMD  ["node","index.js"]
+# CMD  ["npm","start"]
